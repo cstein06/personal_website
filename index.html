@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carlos Stein Brito</title>
+    <meta
+      name="description"
+      content="Independent research page for Carlos Stein Brito: machine learning theory, uncertainty, computational neuroscience, and adaptive control."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #efe4d1;
+        --paper: rgba(251, 247, 238, 0.84);
+        --paper-strong: rgba(255, 252, 246, 0.94);
+        --panel: rgba(255, 252, 246, 0.66);
+        --ink: #161311;
+        --muted: #5b534c;
+        --line: rgba(22, 19, 17, 0.12);
+        --accent: #8f2f24;
+        --accent-soft: rgba(143, 47, 36, 0.1);
+        --shadow: 0 24px 80px rgba(38, 24, 10, 0.12);
+        --radius-lg: 28px;
+        --radius-md: 18px;
+        --radius-sm: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(255, 255, 255, 0.44), transparent 32%),
+          radial-gradient(circle at 80% 18%, rgba(143, 47, 36, 0.12), transparent 20%),
+          linear-gradient(180deg, #f4ead8 0%, #ecdfca 52%, #e9dbc7 100%);
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(22, 19, 17, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(22, 19, 17, 0.035) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: radial-gradient(circle at center, black 50%, transparent 95%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      .site-shell {
+        width: min(1320px, calc(100vw - 32px));
+        margin: 20px auto;
+        border: 1px solid rgba(22, 19, 17, 0.08);
+        border-radius: 36px;
+        background: linear-gradient(180deg, var(--paper-strong), var(--paper));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        min-height: calc(100vh - 40px);
+      }
+
+      .sidebar {
+        position: relative;
+        padding: 32px 28px 28px;
+        border-right: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+          linear-gradient(180deg, rgba(143, 47, 36, 0.04), transparent 26%);
+      }
+
+      .sidebar::after {
+        content: "";
+        position: absolute;
+        inset: 20px;
+        border: 1px solid rgba(22, 19, 17, 0.06);
+        border-radius: 24px;
+        pointer-events: none;
+      }
+
+      .sidebar-inner {
+        position: sticky;
+        top: 24px;
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 88px);
+      }
+
+      .eyebrow,
+      .section-kicker,
+      .meta-label {
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        font-size: 0.72rem;
+        color: rgba(22, 19, 17, 0.55);
+      }
+
+      .nameplate {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 14px;
+        border: 1px solid rgba(22, 19, 17, 0.1);
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.34);
+      }
+
+      .nameplate::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 5px rgba(143, 47, 36, 0.12);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+      }
+
+      .hero-title {
+        margin-top: 28px;
+        font-size: clamp(2.7rem, 4vw, 4.5rem);
+        line-height: 0.94;
+        max-width: 9ch;
+      }
+
+      .hero-copy {
+        margin: 22px 0 0;
+        max-width: 26ch;
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 1rem;
+      }
+
+      .sidebar-block {
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+      }
+
+      .link-list,
+      .mini-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .link-chip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 11px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(22, 19, 17, 0.09);
+        background: rgba(255, 255, 255, 0.42);
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .link-chip:hover,
+      .link-chip:focus-visible {
+        transform: translateX(4px);
+        border-color: rgba(143, 47, 36, 0.3);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .link-chip span:last-child {
+        color: rgba(22, 19, 17, 0.45);
+      }
+
+      .mini-list {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .main {
+        padding: 28px 34px 40px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar-note {
+        max-width: 46ch;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 0.98rem;
+      }
+
+      .tablist {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .tab-button {
+        appearance: none;
+        border: 1px solid rgba(22, 19, 17, 0.1);
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.4);
+        color: rgba(22, 19, 17, 0.7);
+        padding: 10px 16px;
+        cursor: pointer;
+        transition: background 180ms ease, color 180ms ease, border-color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .tab-button:hover,
+      .tab-button:focus-visible {
+        transform: translateY(-1px);
+        border-color: rgba(143, 47, 36, 0.24);
+        color: var(--ink);
+      }
+
+      .tab-button[aria-selected="true"] {
+        background: var(--accent);
+        color: #fff8f1;
+        border-color: transparent;
+      }
+
+      .panel-stack {
+        padding-top: 24px;
+      }
+
+      .panel {
+        display: none;
+        animation: fade-up 280ms ease;
+      }
+
+      .panel.is-active {
+        display: block;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.8fr;
+        gap: 24px;
+      }
+
+      .hero-card,
+      .spotlight-card,
+      .theme-card,
+      .paper-item,
+      .cv-card,
+      .detail-card {
+        border: 1px solid rgba(22, 19, 17, 0.09);
+        border-radius: var(--radius-lg);
+        background: var(--panel);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero-card {
+        padding: 28px;
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background:
+          radial-gradient(circle at 84% 22%, rgba(143, 47, 36, 0.12), transparent 22%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.46));
+      }
+
+      .hero-card p {
+        margin: 0;
+        font-size: clamp(1.2rem, 2vw, 1.82rem);
+        line-height: 1.5;
+        max-width: 34ch;
+      }
+
+      .hero-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .badge {
+        padding: 9px 12px;
+        border-radius: 999px;
+        background: rgba(143, 47, 36, 0.09);
+        color: var(--accent);
+        font-size: 0.9rem;
+      }
+
+      .spotlight-card {
+        padding: 24px;
+        display: grid;
+        gap: 20px;
+      }
+
+      .spotlight-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .spotlight-stat {
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+      }
+
+      .spotlight-stat strong {
+        display: block;
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .section {
+        margin-top: 24px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: clamp(1.55rem, 2vw, 2rem);
+      }
+
+      .section-summary {
+        color: var(--muted);
+        max-width: 44ch;
+        line-height: 1.7;
+      }
+
+      .themes-grid,
+      .details-grid,
+      .cv-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .themes-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .theme-card,
+      .detail-card,
+      .cv-card {
+        padding: 22px;
+      }
+
+      .theme-card p,
+      .detail-card p,
+      .cv-card p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .paper-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .paper-item {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1.5fr) minmax(220px, 0.9fr);
+        gap: 18px;
+        padding: 18px 20px;
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .paper-item:hover,
+      .paper-item:focus-visible {
+        transform: translateX(4px);
+        border-color: rgba(143, 47, 36, 0.25);
+        background: rgba(255, 255, 255, 0.84);
+      }
+
+      .paper-year {
+        color: rgba(22, 19, 17, 0.5);
+        font-size: 0.95rem;
+      }
+
+      .paper-title {
+        font-size: 1.08rem;
+        line-height: 1.55;
+      }
+
+      .paper-meta {
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      .details-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .details-grid.compact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-row {
+        display: grid;
+        grid-template-columns: 128px minmax(0, 1fr);
+        gap: 18px;
+        padding: 16px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .timeline-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .timeline-row .years {
+        color: rgba(22, 19, 17, 0.5);
+        font-size: 0.95rem;
+      }
+
+      .timeline-row h4 {
+        font-size: 1.08rem;
+        line-height: 1.35;
+      }
+
+      .timeline-row p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .cv-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: start;
+      }
+
+      .meta-stack {
+        display: grid;
+        gap: 16px;
+      }
+
+      .meta-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .footer-note {
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        color: rgba(22, 19, 17, 0.58);
+        line-height: 1.7;
+        font-size: 0.94rem;
+      }
+
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(18px);
+        animation: fade-up 560ms ease forwards;
+      }
+
+      [data-reveal="2"] {
+        animation-delay: 80ms;
+      }
+
+      [data-reveal="3"] {
+        animation-delay: 160ms;
+      }
+
+      [data-reveal="4"] {
+        animation-delay: 240ms;
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1120px) {
+        .layout,
+        .hero-grid,
+        .cv-grid,
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .sidebar-inner {
+          position: static;
+          min-height: auto;
+        }
+
+        .paper-item {
+          grid-template-columns: 72px minmax(0, 1fr);
+        }
+
+        .paper-meta {
+          grid-column: 2;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .site-shell {
+          width: calc(100vw - 18px);
+          margin: 9px auto;
+          border-radius: 24px;
+        }
+
+        .sidebar,
+        .main {
+          padding: 22px 18px 26px;
+        }
+
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .themes-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .paper-item,
+        .timeline-row {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .paper-meta {
+          grid-column: auto;
+        }
+
+        .hero-card,
+        .spotlight-card,
+        .theme-card,
+        .paper-item,
+        .cv-card,
+        .detail-card {
+          border-radius: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="sidebar-inner">
+            <div data-reveal="1">
+              <div class="nameplate">
+                <span class="eyebrow">Lisbon, Portugal</span>
+              </div>
+              <h1 class="hero-title">Carlos Stein Brito</h1>
+              <p class="hero-copy">
+                Independent research in machine learning theory, uncertainty, computational neuroscience,
+                adaptive control, and perception.
+              </p>
+            </div>
+
+            <section class="sidebar-block" data-reveal="2">
+              <div class="meta-label">Links</div>
+              <div class="link-list">
+                <a class="link-chip" href="mailto:cstein06@gmail.com">
+                  <span>Email</span>
+                  <span>mailto</span>
+                </a>
+                <a class="link-chip" href="https://github.com/cstein06" target="_blank" rel="noreferrer">
+                  <span>GitHub</span>
+                  <span>cstein06</span>
+                </a>
+                <a
+                  class="link-chip"
+                  href="https://scholar.google.com/citations?user=mL3grbQAAAAJ&hl=en&oi=ao"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>Scholar</span>
+                  <span>search</span>
+                </a>
+                <a
+                  class="link-chip"
+                  href="https://arxiv.org/search/?query=Carlos+Stein+Naves+de+Brito&searchtype=author"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>arXiv</span>
+                  <span>author</span>
+                </a>
+              </div>
+            </section>
+
+            <section class="sidebar-block" data-reveal="3">
+              <div class="meta-label">Current Focus</div>
+              <div class="mini-list">
+                <div>Calibrated uncertainty and model reliability.</div>
+                <div>Learning-time theory in high dimensions.</div>
+                <div>World models, motor adaptation, and control.</div>
+                <div>Plasticity, representation, and perception.</div>
+              </div>
+            </section>
+
+            <section class="sidebar-block" data-reveal="4">
+              <div class="meta-label">Signals</div>
+              <div class="mini-list">
+                <div>ICML 2025 paper on cross-regularization.</div>
+                <div>NeurIPS 2025 paper on rapid motor adaptation.</div>
+                <div>PLOS Computational Biology work on synaptic plasticity.</div>
+                <div>IMO silver medalist and ICPC world finalist.</div>
+              </div>
+            </section>
+          </div>
+        </aside>
+
+        <main class="main">
+          <div class="topbar" data-reveal="1">
+            <p class="topbar-note">
+              The work spans machine learning, neuroscience, and scientific modeling, with a consistent technical
+              agenda: build systems that generalize reliably and quantify what they do not know.
+            </p>
+
+            <div class="tablist" role="tablist" aria-label="Site sections">
+              <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="overview" id="tab-overview" data-tab="overview">
+                Overview
+              </button>
+              <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="research" id="tab-research" data-tab="research">
+                Research
+              </button>
+              <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="cv" id="tab-cv" data-tab="cv">
+                CV
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-stack">
+            <section class="panel is-active" id="overview" role="tabpanel" aria-labelledby="tab-overview">
+              <div class="hero-grid">
+                <article class="hero-card" data-reveal="2">
+                  <div>
+                    <div class="section-kicker">Working Statement</div>
+                    <p>
+                      I am an independent researcher with training in computational neuroscience, machine
+                      learning theory, and scientific modeling. Much of the recent work is about uncertainty,
+                      regularization, and the geometry of learning; the older and still active threads run
+                      through plasticity, motor control, color, and representation.
+                    </p>
+                  </div>
+
+                  <div class="hero-badges">
+                    <div class="badge">uncertainty-aware ML</div>
+                    <div class="badge">learning theory</div>
+                    <div class="badge">computational neuroscience</div>
+                    <div class="badge">adaptive control</div>
+                  </div>
+                </article>
+
+                <aside class="spotlight-card" data-reveal="3">
+                  <div>
+                    <div class="section-kicker">Current</div>
+                    <h2 class="section-title" style="margin-top: 10px;">Independent research in machine learning and neuroscience.</h2>
+                    <p>
+                      Based in Lisbon. Available for research collaborations, talks, advising, and projects
+                      that need both theory and implementation.
+                    </p>
+                  </div>
+
+                  <div class="spotlight-stat">
+                    <strong>15+</strong>
+                    <span class="meta-label">Years across ML and neuroscience</span>
+                  </div>
+
+                  <div class="spotlight-stat">
+                    <strong>2025-2026</strong>
+                    <span class="meta-label">Recent outputs at ICML, NeurIPS, ICLR workshops, and arXiv</span>
+                  </div>
+                </aside>
+              </div>
+
+              <section class="section" data-reveal="3">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Research Areas</div>
+                    <h2 class="section-title">A compact map of the work.</h2>
+                  </div>
+                  <p class="section-summary">
+                    These threads fit together around a shared set of questions: how learning proceeds under limited
+                    evidence, how uncertainty can track reality, and how structured systems adapt without collapsing
+                    into brittle heuristics.
+                  </p>
+                </div>
+
+                <div class="themes-grid">
+                  <article class="theme-card">
+                    <h3>Uncertainty and calibration</h3>
+                    <p>
+                      Methods for making models express what is genuinely supported by data. This includes
+                      calibration-aware objectives, Bayesian neural networks, and uncertainty for neural PDE
+                      surrogates.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Learning theory and geometry</h3>
+                    <p>
+                      A theory of learning time, finite-data thresholds, signal-to-noise, curvature, and high-dimensional
+                      effects in optimization and generalization.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Motor control and world models</h3>
+                    <p>
+                      Cerebellar-style controllers, embodied reinforcement learning, and reference-trajectory world models
+                      for fast adaptation under changing dynamics.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Plasticity, perception, and representation</h3>
+                    <p>
+                      Local learning rules, cortical representation, correlation-invariant synaptic plasticity, and a more
+                      speculative line of work on color and associative structure.
+                    </p>
+                  </article>
+                </div>
+              </section>
+
+              <section class="section" data-reveal="4">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Selected Highlights</div>
+                    <h2 class="section-title">A few anchor points.</h2>
+                  </div>
+                </div>
+
+                <div class="details-grid compact">
+                  <article class="detail-card">
+                    <h3>Reliable AI</h3>
+                    <p>
+                      Cross-regularization, Twin-Boot, and precise Bayesian neural networks all address the same practical
+                      issue: models should know when they are guessing.
+                    </p>
+                  </article>
+                  <article class="detail-card">
+                    <h3>Brains and control</h3>
+                    <p>
+                      Recent work uses motor adaptation as a meeting point for reinforcement learning, control theory, and
+                      cerebellar computation.
+                    </p>
+                  </article>
+                  <article class="detail-card">
+                    <h3>Technical depth</h3>
+                    <p>
+                      Background spans theoretical neuroscience, deep learning, scientific computing, competitive programming,
+                      and software engineering.
+                    </p>
+                  </article>
+                </div>
+              </section>
+
+              <section class="section" data-reveal="4">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Other Work</div>
+                    <h2 class="section-title">Installations, colour, and consciousness.</h2>
+                  </div>
+                  <p class="section-summary">
+                    Another part of the work centers on multi-agent public installations, colour perception, qualia,
+                    and the structure of experience.
+                  </p>
+                </div>
+
+                <div class="themes-grid">
+                  <article class="theme-card">
+                    <h3>Chatsubo: AI bar</h3>
+                    <p>
+                      A live multi-agent social simulation built as an AI bar for the 2024
+                      <a href="https://www.fchampalimaud.org/metamersion-healing-algorithms" target="_blank" rel="noreferrer">Metamersion: Healing Algorithms</a>
+                      exhibition in Lisbon. Autonomous bartenders, ghost patrons, memory, rumor, and human visitors all
+                      share the same evolving social environment.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Colour theory and consciousness</h3>
+                    <p>
+                      A research line on colour qualia as learned associative structure, including
+                      <a href="https://scholar.google.com/citations?user=mL3grbQAAAAJ&hl=en&oi=ao" target="_blank" rel="noreferrer">The Blue is Sky</a>,
+                      work on empiricist theories of consciousness, and experiments on qualia drift under altered spectral environments.
+                    </p>
+                  </article>
+                </div>
+              </section>
+            </section>
+
+            <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research">
+              <section class="section" data-reveal="2">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Research Program</div>
+                    <h2 class="section-title">Selected papers and active threads.</h2>
+                  </div>
+                  <p class="section-summary">
+                    Selected publications across learning theory, reliable AI, motor control, and computational
+                    neuroscience. Links point to conference, journal, or arXiv records.
+                  </p>
+                </div>
+
+                <div class="paper-list">
+                  <a class="paper-item" href="https://arxiv.org/abs/2603.01184" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2026</div>
+                    <div class="paper-title">Scaling of learning time for high dimensional inputs</div>
+                    <div class="paper-meta">arXiv. Learning theory, geometry, signal-to-noise, and training-time structure.</div>
+                  </a>
+                  <a class="paper-item" href="https://arxiv.org/abs/2602.11090" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2026</div>
+                    <div class="paper-title">Direct Learning of Calibration-Aware Uncertainty for Neural PDE Surrogates</div>
+                    <div class="paper-meta">ICLR 2026 AI and PDE Workshop. Calibration-aware uncertainty in scientific machine learning.</div>
+                  </a>
+                  <a class="paper-item" href="https://openreview.net/forum?id=xUVt9laUGi" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2026</div>
+                    <div class="paper-title">Thinking About Thinking With Machines That Think</div>
+                    <div class="paper-meta">ICLR 2026 Post-AGI Science and Society Workshop. Human-AI scientific reasoning, process flattening, and the decomposition principle.</div>
+                  </a>
+                  <a class="paper-item" href="https://openreview.net/forum?id=kqmBo2vwvo" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2026</div>
+                    <div class="paper-title">Directly Optimizing Calibrated Test-Time Uncertainty</div>
+                    <div class="paper-meta">ICLR 2026 TTU Workshop. Test-time uncertainty and calibrated prediction for unseen data.</div>
+                  </a>
+                  <a class="paper-item" href="https://arxiv.org/abs/2506.19726" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-title">Precise Bayesian Neural Networks</div>
+                    <div class="paper-meta">arXiv. Bayesian deep learning with geometry-aware uncertainty.</div>
+                  </a>
+                  <a class="paper-item" href="https://arxiv.org/abs/2508.15019" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-title">Twin-Boot: Uncertainty-Aware Optimization via Online Two-Sample Bootstrapping</div>
+                    <div class="paper-meta">arXiv. Bootstrap-inspired training signals for epistemic uncertainty.</div>
+                  </a>
+                  <a class="paper-item" href="https://icml.cc/virtual/2025/poster/45862" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-title">Cross-regularization: Adaptive Model Complexity through Validation Gradients</div>
+                    <div class="paper-meta">ICML 2025. Adaptive regularization and generalization control in large networks.</div>
+                  </a>
+                  <a class="paper-item" href="https://neurips.cc/virtual/2025/loc/mexico-city/poster/115217" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-title">World Models as Reference Trajectories for Rapid Motor Adaptation</div>
+                    <div class="paper-meta">NeurIPS 2025. Embodied RL, latent reference trajectories, and adaptive control.</div>
+                  </a>
+                  <a class="paper-item" href="https://www.robot-learning.ml/2025/" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-title">World Models as Reference Trajectories for Rapid Motor Adaptation</div>
+                    <div class="paper-meta">ICLR 2025 Robot Learning Workshop. Workshop version on rapid motor adaptation and cerebellar-style control.</div>
+                  </a>
+                  <a class="paper-item" href="https://doi.org/10.1371/journal.pcbi.1011844" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2024</div>
+                    <div class="paper-title">Learning what matters: Synaptic plasticity with invariance to second-order input correlations</div>
+                    <div class="paper-meta">PLOS Computational Biology. Normative neuroscience and representation learning with local rules.</div>
+                  </a>
+                  <a class="paper-item" href="https://doi.org/10.1371/journal.pcbi.1005070" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2016</div>
+                    <div class="paper-title">Nonlinear Hebbian learning as universal principle in receptive field development</div>
+                    <div class="paper-meta">PLOS Computational Biology. A unifying view of receptive field development and unsupervised feature learning.</div>
+                  </a>
+                </div>
+              </section>
+
+              <section class="section" data-reveal="3">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Research Themes</div>
+                    <h2 class="section-title">How the pieces fit together.</h2>
+                  </div>
+                </div>
+
+                <div class="themes-grid">
+                  <article class="theme-card">
+                    <h3>Generalization without bluffing</h3>
+                    <p>
+                      The uncertainty work is not cosmetic calibration. It treats uncertainty, regularization, model size,
+                      and robustness as parts of the same generalization problem.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Learning as a geometric process</h3>
+                    <p>
+                      A central question is why some structures are learned quickly while others remain slow or unreachable,
+                      and how that depends on dimension, curvature, and finite data.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Controllers inside learned systems</h3>
+                    <p>
+                      Motor-control work separates long-horizon policy learning from fast corrective control, both in robots
+                      and as a theoretical picture of cerebellar function.
+                    </p>
+                  </article>
+                  <article class="theme-card">
+                    <h3>Brains as learning algorithms</h3>
+                    <p>
+                      The neuroscience line asks which local plasticity rules can plausibly learn structure from raw sensory
+                      inputs, and what that says about cortex and representation.
+                    </p>
+                  </article>
+                </div>
+              </section>
+
+              <section class="section" data-reveal="4">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Consciousness and Public Work</div>
+                    <h2 class="section-title">Colour, qualia, and live systems in public.</h2>
+                  </div>
+                  <p class="section-summary">
+                    Another active branch of the work connects philosophy of mind, colour perception, and public-facing
+                    agent systems. It sits closer to consciousness research and experimental aesthetics than to standard ML.
+                  </p>
+                </div>
+
+                <div class="paper-list">
+                  <a class="paper-item" href="https://scholar.google.com/citations?user=mL3grbQAAAAJ&hl=en&oi=ao" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-title">The Blue is Sky: Color Qualia as Learned Associative Structures</div>
+                    <div class="paper-meta">ASSC 2025. Colour qualia, associative structure, and consciousness.</div>
+                  </a>
+                  <a class="paper-item" href="https://www.fchampalimaud.org/metamersion-healing-algorithms" target="_blank" rel="noreferrer">
+                    <div class="paper-year">2024</div>
+                    <div class="paper-title">Chatsubo: Multi-Agent Social Simulation</div>
+                    <div class="paper-meta">Interactive AI bar and public multi-agent installation in Lisbon.</div>
+                  </a>
+                </div>
+              </section>
+            </section>
+
+            <section class="panel" id="cv" role="tabpanel" aria-labelledby="tab-cv">
+              <section class="section" data-reveal="2">
+                <div class="section-header">
+                  <div>
+                    <div class="section-kicker">Curriculum Vitae</div>
+                    <h2 class="section-title">Curriculum vitae.</h2>
+                  </div>
+                  <p class="section-summary">
+                    Academic history across research, service, outreach, and technical work.
+                  </p>
+                </div>
+
+                <div class="cv-grid">
+                  <article class="cv-card">
+                    <h3>Positions</h3>
+                    <div class="timeline">
+                      <div class="timeline-row">
+                        <div class="years">2025-present</div>
+                        <div>
+                          <h4>Independent researcher, Lisbon</h4>
+                          <p>
+                            Self-directed work on trustworthy AI, uncertainty-aware machine learning, AI for science,
+                            computational neuroscience, and adaptive systems.
+                          </p>
+                        </div>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="years">2022-2025</div>
+                        <div>
+                          <h4>Research Scientist, Champalimaud Research</h4>
+                          <p>Natural Intelligence Lab, Champalimaud Centre for the Unknown, Lisbon.</p>
+                        </div>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="years">2020-2021</div>
+                        <div>
+                          <h4>Visiting Scientist, EPFL</h4>
+                          <p>Laboratory of Computational Neuroscience, Lausanne.</p>
+                        </div>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="years">2016-2019</div>
+                        <div>
+                          <h4>Postdoctoral Researcher, Gatsby Computational Neuroscience Unit, UCL</h4>
+                          <p>Postdoctoral work in theoretical neuroscience and machine learning.</p>
+                        </div>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="years">2020-2021</div>
+                        <div>
+                          <h4>Machine Learning Expert, Cambridge Spark</h4>
+                          <p>Course design, large-scale ML training material, and the G-Research Kaggle competition.</p>
+                        </div>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="years">2006 / 2003</div>
+                        <div>
+                          <h4>Engineering internships at Google and IAE/CTA</h4>
+                          <p>Software systems, optimization, and computational engineering.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <div class="meta-stack">
+                    <article class="cv-card">
+                      <h3>Education</h3>
+                      <div class="meta-list">
+                        <div>PhD in Computational Neuroscience, EPFL, 2010-2016.</div>
+                        <div>MSc in Neuroscience, University of Sao Paulo, 2008-2009.</div>
+                        <div>BSc in Computer Engineering, ITA, 2002-2007.</div>
+                      </div>
+                    </article>
+
+                    <article class="cv-card">
+                      <h3>Awards</h3>
+                      <div class="meta-list">
+                        <div>Silver Medal, International Mathematical Olympiad (IMO), 2001.</div>
+                        <div>World Finalist, International Collegiate Programming Contest (ICPC), 2005 and 2006.</div>
+                        <div>Gold Medal, Brazilian Mathematical Olympiad, 2000, 2001, 2003, and 2004.</div>
+                        <div>2nd prize, International Mathematics Competition, 2004 and 2005.</div>
+                        <div>First prize, Brazilian Physics Olympiad, 2001.</div>
+                      </div>
+                    </article>
+
+                    <article class="cv-card">
+                      <h3>Selected talks</h3>
+                      <div class="meta-list">
+                        <div>Generalization, regularization and Bayesian neural networks. Gatsby UCL Transfer Talk, 2019.</div>
+                        <div>Adaptive regularization by noise in deep neural networks. Albert Einstein Hospital Big Data Initiative, 2019.</div>
+                        <div>Five ways to regularize deep neural networks. LCN EPFL Seminars, 2018.</div>
+                        <div>Theory of synaptic plasticity for receptive field development. Oxford Neurotheory Seminars, 2015.</div>
+                      </div>
+                    </article>
+
+                    <article class="cv-card">
+                      <h3>Service</h3>
+                      <div class="meta-list">
+                        <div>Conference Media Chair, Cosyne, 2018-2025.</div>
+                        <div>Seminar Organiser, Gatsby UCL Weekly External Seminars, 2017-2019.</div>
+                        <div>External Seminar Organiser, Champalimaud Research, 2022-2024.</div>
+                        <div>Founder and organiser, Theory Mini-Symposium series, 2022-2024.</div>
+                        <div>Referee for Cosyne, NeurIPS, ICML, and ICLR.</div>
+                        <div>Guest editor, PLOS Computational Biology.</div>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </section>
+
+              <section class="section" data-reveal="3">
+                <div class="details-grid compact">
+                  <article class="detail-card">
+                    <h3>Outreach</h3>
+                    <p>
+                      Science on the Walls | Ciencia nas Paredes, Lisbon, 2024. Artificial Intelligence and Medicine,
+                      Itau Cultural, Sao Paulo, 2018. How the brain represents the world, Arte della tavola, Lausanne, 2013.
+                    </p>
+                  </article>
+                  <article class="detail-card">
+                    <h3>Languages and tools</h3>
+                    <p>
+                      Portuguese, English, Spanish, French, and German. Technical stack includes Python, C++, Julia, Matlab,
+                      PyTorch, and agentic systems tooling.
+                    </p>
+                  </article>
+                </div>
+
+                <div class="footer-note">
+                  Contact: <a href="mailto:cstein06@gmail.com">cstein06@gmail.com</a>. Based in Lisbon, Portugal.
+                </div>
+              </section>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const tabs = Array.from(document.querySelectorAll("[data-tab]"));
+      const panels = Array.from(document.querySelectorAll(".panel"));
+
+      function activateTab(tabId) {
+        tabs.forEach((button) => {
+          const selected = button.dataset.tab === tabId;
+          button.setAttribute("aria-selected", String(selected));
+          button.tabIndex = selected ? 0 : -1;
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle("is-active", panel.id === tabId);
+        });
+
+        if (window.location.hash !== "#" + tabId) {
+          history.replaceState(null, "", "#" + tabId);
+        }
+      }
+
+      tabs.forEach((button) => {
+        button.addEventListener("click", () => activateTab(button.dataset.tab));
+      });
+
+      const initialTab = window.location.hash.replace("#", "");
+      if (tabs.some((button) => button.dataset.tab === initialTab)) {
+        activateTab(initialTab);
+      } else {
+        activateTab("overview");
+      }
+    </script>
+  </body>
+</html>
